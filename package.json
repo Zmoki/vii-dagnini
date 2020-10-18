@@ -1,0 +1,19 @@
+{
+  "name": "vii-dagnini",
+  "version": "1.0.0",
+  "description": "Project of Dagnini for VII Moscow International Biennale for Young Art.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zmoki/vii-dagnini.git"
+  },
+  "author": "Zarema Khalilova",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zmoki/vii-dagnini/issues"
+  },
+  "homepage": "https://github.com/Zmoki/vii-dagnini#readme"
+}
