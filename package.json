@@ -4,8 +4,8 @@
   "description": "Project of Dagnini for VII Moscow International Biennale for Young Art.",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "parcel build ./src/index.html",
-    "start": "parcel serve ./src/index.html",
+    "build": "parcel build app/index.html",
+    "start": "parcel serve app/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
