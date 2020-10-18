@@ -2,8 +2,10 @@
   "name": "vii-dagnini",
   "version": "1.0.0",
   "description": "Project of Dagnini for VII Moscow International Biennale for Young Art.",
-  "main": "index.js",
   "scripts": {
+    "clean": "rimraf dist",
+    "build": "parcel build ./src/index.html",
+    "start": "parcel serve ./src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/Zmoki/vii-dagnini/issues"
   },
-  "homepage": "https://github.com/Zmoki/vii-dagnini#readme"
+  "homepage": "https://github.com/Zmoki/vii-dagnini#readme",
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.1",
+    "rimraf": "^3.0.2"
+  }
 }
