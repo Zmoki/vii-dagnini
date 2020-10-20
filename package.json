@@ -4,6 +4,7 @@
   "description": "Project of Dagnini for VII Moscow International Biennale for Young Art.",
   "scripts": {
     "clean": "rimraf dist",
+    "create:video:webm": "ffmpeg -start_number $START_NUMBER -i ./sources/\"$SOURCE_PATH\" -frames:v $FRAMES_COUNT ./app/videos/$OUT_NAME.webm",
     "build": "parcel build app/index.html",
     "start": "parcel serve app/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
