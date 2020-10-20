@@ -1,3 +1,12 @@
 body {
   background-color: #ddd;
 }
+
+.object {
+  height: 400px;
+  width: 400px;
+  background-color: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
