@@ -5,8 +5,18 @@ body {
 .object {
   height: 400px;
   width: 400px;
-  background-color: green;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
+}
+
+.object__video {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 2s, visibility 2s;
+}
+
+.object__video_hidden {
+  visibility: hidden;
+  opacity: 0;
 }
