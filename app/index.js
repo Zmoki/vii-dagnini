@@ -1,12 +1,17 @@
 const objects = document.querySelectorAll('.object')
+const carousel = document.querySelector('.carousel')
 
 for (let object of objects) {
   const loop = object.querySelector('.object__video_type_loop')
   const move = object.querySelector('.object__video_type_move')
 
+  loop.playbackRate = 2.5
+
   const startMove = () => {
-    loop.pause()
-    loop.classList.toggle('object__video_hidden')
+    document.querySelectorAll('.object__video_type_loop').forEach(vid => {
+      vid.pause()
+      vid.classList.add('object__video_hidden')
+    });
     move.classList.toggle('object__video_hidden')
 
     move.addEventListener('transitionend', () => {
@@ -15,19 +20,25 @@ for (let object of objects) {
 
     move.addEventListener('ended', () => {
       endMove()
+      carousel.style.setProperty('--play-state', 'running')
     }, {once: true})
   }
 
   const endMove = () => {
-    loop.classList.toggle('object__video_hidden')
     move.classList.toggle('object__video_hidden')
 
-    loop.addEventListener('transitionend', () => {
-      loop.play()
+    move.addEventListener('transitionend', () => {
+      document.querySelectorAll('.object__video_type_loop').forEach(vid => {
+        vid.classList.toggle('object__video_hidden')
+        vid.play()
+      });
     }, {once: true})
   }
 
-  loop.addEventListener('click', () => {
-    startMove()
-  })
+  if (move !== null) {
+    loop.addEventListener('click', () => {
+      startMove()
+      carousel.style.setProperty('--play-state', 'paused')
+    })
+  }
 }

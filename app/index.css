@@ -1,19 +1,18 @@
 body {
-  background-color: #ddd;
 }
 
 .object {
-  height: 400px;
-  width: 400px;
+  height: 300px;
   position: relative;
 }
 
 .object__video {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translate3d(0, 0, 0);
   transition: opacity 2s, visibility 2s;
+  cursor: pointer;
 }
 
 .object__video_hidden {
