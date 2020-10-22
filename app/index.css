@@ -19,3 +19,79 @@ body {
   visibility: hidden;
   opacity: 0;
 }
+
+.carousel {
+  --play-state: paused;
+  width: 800px;
+  height: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.carousel__top {
+  top: -50px;
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+}
+
+.carousel__top.object_name_heruvim {
+  left: 10%;
+  top: -200px;
+}
+.carousel__top.object_name_wings {
+  left: 90%;
+  top: -250px;
+}
+.carousel__top.object_name_wings2 {
+  left: 70%;
+  top: -270px;
+}
+
+.carousel__item {
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  position: absolute;
+  animation-duration: 80s;
+  animation-name: carousel;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-play-state: var(--play-state);
+}
+
+
+@keyframes carousel {
+  0% {
+    z-index: 2;
+    left: 0;
+    bottom: 0;
+  }
+
+  35% {
+    z-index: 2;
+    left: 100%;
+    bottom: 0;
+    transform: scale(1) translateX(-100%);
+  }
+
+  50% {
+    z-index: 0;
+    left: 85%;
+    bottom: 100px;
+    transform: scale(.7)
+  }
+
+  90% {
+    z-index: 0;
+    left: 5%;
+    bottom: 100px;
+    transform: scale(.7)
+  }
+
+  100% {
+    left: 0;
+    bottom: 0;
+    transform: scale(1)
+  }
+}
