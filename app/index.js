@@ -1,6 +1,12 @@
 const objects = document.querySelectorAll('.object')
 const carousel = document.querySelector('.carousel')
 
+document.querySelectorAll('.object__video_type_loop').forEach(vid => {
+  vid.addEventListener('canplay', () => {
+    vid.play()
+  })
+});
+
 for (let object of objects) {
   const loop = object.querySelector('.object__video_type_loop')
   const move = object.querySelector('.object__video_type_move')
