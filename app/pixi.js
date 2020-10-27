@@ -1,4 +1,36 @@
 window.addEventListener('load', () => {
+  const loopVideos = {
+    'four-hands': {'webm': 'videos/_loops/webm/four-hands-loop.webm', 'hevc': 'videos/_loops/hevc/four%20hands%20loop.mp4'},
+    'gorgulia': {'webm': 'videos/_loops/webm/gorgulia%20new%20loop.webm', 'hevc': 'videos/_loops/hevc/gorgulia%20new%20loop.mp4'},
+    'goroh': {'webm': 'videos/_loops/webm/goroh%20raduga%20loop.webm', 'hevc': 'videos/_loops/hevc/goroh%20raduga%20loop.mp4'},
+    'leg': {'webm': 'videos/_loops/webm/leg%20leg.webm', 'hevc': 'videos/_loops/hevc/leg%20leg.mp4'},
+    'lion': {'webm': 'videos/_loops/webm/new%20lion%20loopp.webm', 'hevc': 'videos/_loops/hevc/new%20lion%20loopp.mp4'},
+    'opera': {'webm': 'videos/_loops/webm/opera%20loop.webm', 'hevc': 'videos/_loops/hevc/opera%20loop.mp4'},
+    'pip-show': {'webm': 'videos/_loops/webm/pip%20show%20loop.webm', 'hevc': 'videos/_loops/hevc/pip%20show%20loop.mp4'},
+    'rusalka': {'webm': 'videos/_loops/webm/rusalka%20looop.webm', 'hevc': 'videos/_loops/hevc/rusalka%20looop.mp4'},
+    'smotritelnitsa': {'webm': 'videos/_loops/webm/smotritelnitsa%20loop.webm', 'hevc': 'videos/_loops/hevc/smotritelnitsa%20loop.mp4'},
+    'sport': {'webm': 'videos/_loops/webm/sport%20loop.webm', 'hevc': 'videos/_loops/hevc/sport%20loop.mp4'},
+    'svetofor': {'webm': 'videos/_loops/webm/svetofor%20loop.webm', 'hevc': 'videos/_loops/hevc/svetofor%20loop.mp4'},
+    'svidetel': {'webm': 'videos/_loops/webm/svidetel%20loop.webm', 'hevc': 'videos/_loops/hevc/svidetel%20loop.mp4'},
+  }
+  const moveVideos = {
+    'four-hands': {'webm': 'videos/_moves/webm/four%20hands%20move.webm', 'hevc': 'videos/_moves/hevc/four%20hands%20move.mp4'},
+    'gorgulia': {'webm': 'videos/_moves/webm/gorgulia%20move%20+%202%20loops.webm', 'hevc': 'videos/_moves/hevc/gorgulia%20move%20+%202%20loops.mp4'},
+    'goroh': {'webm': 'videos/_moves/webm/goroh%20raduga%20move.webm', 'hevc': 'videos/_moves/hevc/goroh%20raduga%20move.mp4'},
+    'lion': {'webm': 'videos/_moves/webm/lion%20new%20move.webm', 'hevc': 'videos/_moves/hevc/lion%20new%20move.mp4'},
+    'opera': {'webm': 'videos/_moves/webm/opera%20moove.webm', 'hevc': 'videos/_moves/hevc/opera%20moove.mp4'},
+    'pip-show': {'webm': 'videos/_moves/webm/pip%20show%20move%20pt2.webm', 'hevc': 'videos/_moves/hevc/pip%20show%20move%20pt2.mp4'},
+    'rusalka': {'webm': 'videos/_moves/webm/rusalka%20loop%20move%20loop.webm', 'hevc': 'videos/_moves/hevc/rusalka%20loop%20move%20loop.mp4'},
+    'smotritelnitsa': {'webm': 'videos/_moves/webm/smotritelnitsa%20loop%20move%20loop.webm', 'hevc': 'videos/_moves/hevc/smotritelnitsa%20loop%20move%20loop.mp4'},
+    'sport': {'webm': 'videos/_moves/webm/sport%20loop%20move%20loop.webm', 'hevc': 'videos/_moves/hevc/sport%20loop%20move%20loop.mp4'},
+    'svetofor': {'webm': 'videos/_moves/webm/svetofor%20move.webm', 'hevc': 'videos/_moves/hevc/svetofor%20move.mp4'},
+    'svidetel': {'webm': 'videos/_moves/webm/svidetel%20move.webm', 'hevc': 'videos/_moves/hevc/svidetel%20move.mp4'},
+  }
+  const otherVideos = {
+    'gorgulia': {'webm': 'videos/_loops/webm/gorgulia%20new%20loop.webm', 'hevc': 'videos/_loops/hevc/gorgulia%20new%20loop.mp4'},
+    'wings': {'webm': 'videos/_loops/webm/wings%20pt2.webm', 'hevc': 'videos/_loops/hevc/wings%20pt2.mp4'},
+    'heruvim': {'webm': 'videos/_loops/webm/heruvim.webm', 'hevc': 'videos/_loops/hevc/heruvim.mp4'},
+  }
   let type = "WebGL"
   if(!PIXI.utils.isWebGLSupported()){
     type = "canvas"
@@ -191,32 +223,30 @@ window.addEventListener('load', () => {
 
   platformItemsContainer.sortableChildren = true
 
-  const moveSpritesMap = moves.reduce((accumulator, item) => {
-    const source = document.querySelector(`.move_name_${item.name}`)
-
-    if (source == null) {
-      return accumulator
-    }
-
-    const texture = PIXI.Texture.from(source)
-    const sprite = new PIXI.Sprite(texture)
-
-    sprite.height = item.height
-    sprite.width = item.width
-
-    accumulator[item.name] = sprite
-
-    return accumulator
-  }, {})
-
   const otherSpritesMap = other.reduce((accumulator, item) => {
-    const source = document.querySelector(`.other_name_${item.name}`)
-
-    if (source == null) {
+    if (otherVideos[item.name] == null) {
       return accumulator
     }
+    const videoElement = document.createElement('video')
 
-    const texture = PIXI.Texture.from(source)
+    videoElement.muted = true
+    videoElement.loop = true
+    videoElement.autoplay = true
+
+    const sources = otherVideos[item.name]
+
+    const webmSource = document.createElement('source')
+    webmSource.type = 'video/webm'
+    webmSource.src = sources.webm
+
+    const hevcSource = document.createElement('source')
+    hevcSource.type = 'video/mp4; codecs=hvc1'
+    hevcSource.src = sources.hevc
+
+    videoElement.appendChild(webmSource)
+    videoElement.appendChild(hevcSource)
+
+    const texture = PIXI.Texture.from(videoElement)
     const sprite = new PIXI.Sprite(texture)
 
     sprite.height = item.height
@@ -229,9 +259,26 @@ window.addEventListener('load', () => {
 
 
   const sprites = platformItems.map((item, index) => {
-    const source = document.querySelector(`.platform-item_name_${item.name}`)
+    const videoElement = document.createElement('video')
 
-    const texture = PIXI.Texture.from(source)
+    videoElement.muted = true
+    videoElement.loop = true
+    videoElement.autoplay = true
+
+    const sources = loopVideos[item.name]
+
+    const webmSource = document.createElement('source')
+    webmSource.type = 'video/webm'
+    webmSource.src = sources.webm
+
+    const hevcSource = document.createElement('source')
+    hevcSource.type = 'video/mp4; codecs=hvc1'
+    hevcSource.src = sources.hevc
+
+    videoElement.appendChild(webmSource)
+    videoElement.appendChild(hevcSource)
+
+    const texture = PIXI.Texture.from(videoElement)
     const sprite = new PIXI.Sprite(texture)
 
     const degrees = index * degreeStep
@@ -249,30 +296,49 @@ window.addEventListener('load', () => {
 
     sprite.interactive = true
 
-    sprite.texture.baseTexture.resource.source.play()
+    //sprite.texture.baseTexture.resource.source.play()
 
-    if (moveSpritesMap[item.name] != null) {
+    if (moveVideos[item.name] != null) {
       sprite.on('pointertap', () => {
         platformMovingState = 'paused'
         platformItemsContainer.visible = false
 
-        const move = moveSpritesMap[item.name]
+        const moveVideoElement = document.createElement('video')
 
-        move.x = 700 - (move.width / 2)
-        move.y = 400 - (move.height / 2)
+        moveVideoElement.muted = true
+        moveVideoElement.autoplay = true
+
+        const sources = moveVideos[item.name]
+
+        const webmSource = document.createElement('source')
+        webmSource.type = 'video/webm'
+        webmSource.src = sources.webm
+
+        const hevcSource = document.createElement('source')
+        hevcSource.type = 'video/mp4; codecs=hvc1'
+        hevcSource.src = sources.hevc
+
+        moveVideoElement.appendChild(webmSource)
+        moveVideoElement.appendChild(hevcSource)
+
+        const texture = PIXI.Texture.from(moveVideoElement)
+        const moveSprite = new PIXI.Sprite(texture)
+
+        moveSprite.x = 700 - (moveSprite.width / 2)
+        moveSprite.y = 400 - (moveSprite.height / 2)
 
         const stop = () => {
-          app.stage.removeChild(move)
+          app.stage.removeChild(moveSprite)
           platformItemsContainer.visible = true
           platformMovingState = 'running'
           platformMoving()
         }
 
-        move.interactive = true
+        moveSprite.interactive = true
 
-        move.on('pointertap', stop)
+        moveSprite.on('pointertap', stop)
 
-        const video = move.texture.baseTexture.resource.source
+        const video = moveSprite.texture.baseTexture.resource.source
 
         video.load()
         video.addEventListener('canplay', () => {
@@ -280,7 +346,7 @@ window.addEventListener('load', () => {
         })
         video.addEventListener('ended', stop)
 
-        app.stage.addChild(move)
+        app.stage.addChild(moveSprite)
       })
     }
 
