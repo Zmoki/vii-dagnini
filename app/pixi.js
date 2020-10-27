@@ -10,6 +10,7 @@ window.addEventListener('load', () => {
   //app.renderer.backgroundColor = PIXI.utils.string2hex("#dddddd");
   app.renderer.view.style.maxWidth = '100%'
   app.renderer.view.style.maxHeight = 'calc(100vh - 40px)'
+  app.renderer.view.style.flex = '1 0 auto'
 
   const platformItems = [
     {
@@ -248,6 +249,8 @@ window.addEventListener('load', () => {
 
     sprite.interactive = true
 
+    sprite.texture.baseTexture.resource.source.play()
+
     if (moveSpritesMap[item.name] != null) {
       sprite.on('pointertap', () => {
         platformMovingState = 'paused'
@@ -271,7 +274,10 @@ window.addEventListener('load', () => {
 
         const video = move.texture.baseTexture.resource.source
 
-        video.play()
+        video.load()
+        video.addEventListener('canplay', () => {
+          video.play()
+        })
         video.addEventListener('ended', stop)
 
         app.stage.addChild(move)
