@@ -1,6 +1,6 @@
 window.addEventListener('load', () => {
   const loopVideos = {
-    'four-hands': {'webm': 'videos/_loops/webm/four-hands-loop.webm', 'hevc': 'videos/_loops/hevc/four%20hands%20loop.mp4'},
+    'four-hands': {'webm': 'videos/_loops/webm/four%20hands%20loop.webm', 'hevc': 'videos/_loops/hevc/four%20hands%20loop.mp4'},
     'gorgulia': {'webm': 'videos/_loops/webm/gorgulia%20new%20loop.webm', 'hevc': 'videos/_loops/hevc/gorgulia%20new%20loop.mp4'},
     'goroh': {'webm': 'videos/_loops/webm/goroh%20raduga%20loop.webm', 'hevc': 'videos/_loops/hevc/goroh%20raduga%20loop.mp4'},
     'leg': {'webm': 'videos/_loops/webm/leg%20leg.webm', 'hevc': 'videos/_loops/hevc/leg%20leg.mp4'},
@@ -28,7 +28,7 @@ window.addEventListener('load', () => {
   }
   const otherVideos = {
     'gorgulia': {'webm': 'videos/_loops/webm/gorgulia%20new%20loop.webm', 'hevc': 'videos/_loops/hevc/gorgulia%20new%20loop.mp4'},
-    'wings': {'webm': 'videos/_loops/webm/wings%20pt2.webm', 'hevc': 'videos/_loops/hevc/wings%20pt2.mp4'},
+    'wings': {'webm': 'videos/_loops/webm/wings.webm', 'hevc': 'videos/_loops/hevc/wings.mp4'},
     'heruvim': {'webm': 'videos/_loops/webm/heruvim.webm', 'hevc': 'videos/_loops/hevc/heruvim.mp4'},
   }
   let type = "WebGL"
@@ -218,12 +218,8 @@ window.addEventListener('load', () => {
     }
   }
 
-  let platformMovingState = 'running'
-  const platformItemsContainer = new PIXI.Container()
 
-  platformItemsContainer.sortableChildren = true
-
-  const otherSpritesMap = other.reduce((accumulator, item) => {
+  /*const otherSpritesMap = other.reduce((accumulator, item) => {
     if (otherVideos[item.name] == null) {
       return accumulator
     }
@@ -255,16 +251,18 @@ window.addEventListener('load', () => {
     accumulator[item.name] = sprite
 
     return accumulator
-  }, {})
+  }, {})*/
 
-
-  const sprites = platformItems.map((item, index) => {
+  const loader = new PIXI.Loader()
+  const platformItemsVideos = platformItems.reduce((items, item) => {
     const videoElement = document.createElement('video')
 
     videoElement.muted = true
     videoElement.loop = true
-    videoElement.autoplay = true
-
+    videoElement.WebKitPlaysInline = true
+    videoElement.width = item.width
+    videoElement.height = item.height
+/*
     const sources = loopVideos[item.name]
 
     const webmSource = document.createElement('source')
@@ -278,134 +276,58 @@ window.addEventListener('load', () => {
     videoElement.appendChild(webmSource)
     videoElement.appendChild(hevcSource)
 
-    const texture = PIXI.Texture.from(videoElement)
-    const sprite = new PIXI.Sprite(texture)
-
-    const degrees = index * degreeStep
-
-    const {x, y, z} = getXYZ(degrees)
-
-    sprite.height = item.height
-    sprite.width = item.width
-
-    sprite.x = x - (item.width / 2)
-    sprite.y = y - item.height
-    sprite.zIndex = z
-
-    sprite.degrees = degrees
-
-    sprite.interactive = true
-
-    //sprite.texture.baseTexture.resource.source.play()
-
-    if (moveVideos[item.name] != null) {
-      sprite.on('pointertap', () => {
-        platformMovingState = 'paused'
-        platformItemsContainer.visible = false
-
-        const moveVideoElement = document.createElement('video')
-
-        moveVideoElement.muted = true
-        moveVideoElement.autoplay = true
-
-        const sources = moveVideos[item.name]
-
-        const webmSource = document.createElement('source')
-        webmSource.type = 'video/webm'
-        webmSource.src = sources.webm
-
-        const hevcSource = document.createElement('source')
-        hevcSource.type = 'video/mp4; codecs=hvc1'
-        hevcSource.src = sources.hevc
-
-        moveVideoElement.appendChild(webmSource)
-        moveVideoElement.appendChild(hevcSource)
-
-        const texture = PIXI.Texture.from(moveVideoElement)
-        const moveSprite = new PIXI.Sprite(texture)
-
-        moveSprite.x = 700 - (moveSprite.width / 2)
-        moveSprite.y = 400 - (moveSprite.height / 2)
-
-        const stop = () => {
-          app.stage.removeChild(moveSprite)
-          platformItemsContainer.visible = true
-          platformMovingState = 'running'
-          platformMoving()
-        }
-
-        moveSprite.interactive = true
-
-        moveSprite.on('pointertap', stop)
-
-        const video = moveSprite.texture.baseTexture.resource.source
-
-        video.load()
-        video.addEventListener('canplay', () => {
-          video.play()
-        })
-        video.addEventListener('ended', stop)
-
-        app.stage.addChild(moveSprite)
+    const promise = new Promise((resolve) => {
+      videoElement.addEventListener('canplaythrough', () => {
+        console.log('can play', item.name)
+        videoElement.play()
+        resolve()
       })
-    }
-
-    return sprite
-  })
+    }, {once: true})
 
 
-  const platformMoving = () => {
-    if (platformMovingState === 'running') {
-      requestAnimationFrame(platformMoving)
+    videoElement.load()*/
 
-      sprites.forEach(sprite => {
-        sprite.degrees += 0.1
 
-        if (sprite.degrees >= 360) {
-          sprite.degrees = 0
-        }
+    //promises.push(promise)
+    items[item.name] = videoElement
 
-        const {x, y, z} = getXYZ(sprite.degrees)
+    return items
+  }, {})
 
-        sprite.x = x - (sprite.width / 2)
-        sprite.y = y - sprite.height
-        sprite.zIndex = z
-      })
-    }
-  }
 
-  if (otherSpritesMap.gorgulia != null) {
+
+  /*if (otherSpritesMap.gorgulia != null) {
     otherSpritesMap.gorgulia.x = 700 - (otherSpritesMap.gorgulia.width / 2)
     otherSpritesMap.gorgulia.y = 0
     otherSpritesMap.gorgulia.zIndex = 8
     otherSpritesMap.gorgulia.interactive = true
-    otherSpritesMap.gorgulia.on('pointertap', () => {
-      platformMovingState = 'paused'
-      platformItemsContainer.visible = false
-
-      const move = moveSpritesMap.gorgulia
-
-      move.x = 700 - (move.width / 2)
-      move.y = 400 - (move.height / 2)
-
-      const stop = () => {
-        app.stage.removeChild(move)
-        platformItemsContainer.visible = true
-        platformMovingState = 'running'
-        platformMoving()
-      }
-
-      move.interactive = true
-
-      move.on('pointertap', stop)
-
-      const video = move.texture.baseTexture.resource.source
-
-      video.play()
-      video.addEventListener('ended', stop)
-
-      app.stage.addChild(move)
-    })
+    // otherSpritesMap.gorgulia.on('pointertap', () => {
+    //   platformMovingState = 'paused'
+    //   platformItemsContainer.visible = false
+    //
+    //   const move = moveSpritesMap.gorgulia
+    //
+    //   move.x = 700 - (move.width / 2)
+    //   move.y = 400 - (move.height / 2)
+    //
+    //   const stop = () => {
+    //     app.stage.removeChild(move)
+    //     platformItemsContainer.visible = true
+    //     platformMovingState = 'running'
+    //     platformMoving()
+    //   }
+    //
+    //   move.interactive = true
+    //
+    //   move.on('pointertap', stop)
+    //
+    //   const video = move.texture.baseTexture.resource.source
+    //
+    //   video.play()
+    //   video.addEventListener('ended', stop)
+    //
+    //   app.stage.addChild(move)
+    // })
 
     platformItemsContainer.addChild(otherSpritesMap.gorgulia)
   }
@@ -417,28 +339,132 @@ window.addEventListener('load', () => {
 
     platformItemsContainer.addChild(otherSpritesMap.heruvim)
   }
-
-  sprites.forEach(sprite => {
-    platformItemsContainer.addChild(sprite);
-  })
-
   if (otherSpritesMap.wings != null) {
     otherSpritesMap.wings.x = 1100 - (otherSpritesMap.wings.width / 2)
     otherSpritesMap.wings.y = 0
     otherSpritesMap.wings.zIndex = 8
 
     platformItemsContainer.addChild(otherSpritesMap.wings)
-  }
+  }*/
 
-  sprites.forEach(sprite => {
-    platformItemsContainer.addChild(sprite);
+  let platformMovingState = 'running'
+
+
+  Promise.all(promises).then(() => {
+    console.log('all')
+    //setup()
   })
 
+  const setup = () => {
+    const sprites = platformItems.map((item, index) => {
+      const videoElement = platformItemsVideos[item.name]
 
-  app.stage.addChild(platformItemsContainer)
+      const texture = PIXI.Texture.from(videoElement)
+      const sprite = new PIXI.Sprite(texture)
 
-  platformMoving()
+      const degrees = index * degreeStep
 
-  document.querySelector('#carousel').appendChild(app.view);
-  document.querySelector('#loader').hidden = true
+      const {x, y, z} = getXYZ(degrees)
+
+      sprite.height = item.height
+      sprite.width = item.width
+
+      sprite.x = x - (item.width / 2)
+      sprite.y = y - item.height
+      sprite.zIndex = z
+
+      sprite.degrees = degrees
+
+      sprite.interactive = true
+
+      //sprite.texture.baseTexture.resource.source.play()
+
+      // if (moveVideos[item.name] != null) {
+      //   sprite.on('pointertap', () => {
+      //     platformMovingState = 'paused'
+      //     platformItemsContainer.visible = false
+      //
+      //     const moveVideoElement = document.createElement('video')
+      //
+      //     moveVideoElement.muted = true
+      //     moveVideoElement.autoplay = true
+      //
+      //     const sources = moveVideos[item.name]
+      //
+      //     const webmSource = document.createElement('source')
+      //     webmSource.type = 'video/webm'
+      //     webmSource.src = sources.webm
+      //
+      //     const hevcSource = document.createElement('source')
+      //     hevcSource.type = 'video/mp4; codecs=hvc1'
+      //     hevcSource.src = sources.hevc
+      //
+      //     moveVideoElement.appendChild(webmSource)
+      //     moveVideoElement.appendChild(hevcSource)
+      //
+      //     const texture = PIXI.Texture.from(moveVideoElement)
+      //     const moveSprite = new PIXI.Sprite(texture)
+      //
+      //     moveSprite.x = 700 - (moveSprite.width / 2)
+      //     moveSprite.y = 400 - (moveSprite.height / 2)
+      //
+      //     const stop = () => {
+      //       app.stage.removeChild(moveSprite)
+      //       platformItemsContainer.visible = true
+      //       platformMovingState = 'running'
+      //       platformMoving()
+      //     }
+      //
+      //     moveSprite.interactive = true
+      //
+      //     moveSprite.on('pointertap', stop)
+      //
+      //     const video = moveSprite.texture.baseTexture.resource.source
+      //
+      //     video.load()
+      //     video.addEventListener('canplay', () => {
+      //       video.play()
+      //     })
+      //     video.addEventListener('ended', stop)
+      //
+      //     app.stage.addChild(moveSprite)
+      //   })
+      // }
+
+      return sprite
+    })
+    const platformMoving = () => {
+      if (platformMovingState === 'running') {
+        requestAnimationFrame(platformMoving)
+
+        sprites.forEach(sprite => {
+          sprite.degrees += 0.1
+
+          if (sprite.degrees >= 360) {
+            sprite.degrees = 0
+          }
+
+          const {x, y, z} = getXYZ(sprite.degrees)
+
+          sprite.x = x - (sprite.width / 2)
+          sprite.y = y - sprite.height
+          sprite.zIndex = z
+        })
+      }
+    }
+    const platformItemsContainer = new PIXI.Container()
+
+    platformItemsContainer.sortableChildren = true
+
+    sprites.forEach(sprite => {
+      platformItemsContainer.addChild(sprite);
+    })
+
+    app.stage.addChild(platformItemsContainer)
+
+    platformMoving()
+    document.querySelector('#carousel').appendChild(app.view);
+    document.querySelector('#loader').hidden = true
+  }
+
 })
