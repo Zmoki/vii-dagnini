@@ -75,13 +75,13 @@ window.addEventListener('load', () => {
     },
     'wings': {
 
-      height: 130,
-      width: 215,
+      height: 132,
+      width: 218,
     },
     'heruvim': {
 
-      height: 150,
-      width: 150,
+      height: 170,
+      width: 170,
     },
   }
   const moveVideos = {
