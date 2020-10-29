@@ -65,7 +65,7 @@ window.addEventListener('load', () => {
 
       height: 550,
       width: 306,
-      deltaY: 70,
+      deltaY: 90,
     },
     'svidetel': {
 
@@ -173,7 +173,7 @@ window.addEventListener('load', () => {
     const radius = 500
     const radians = (degres) * (Math.PI / 180)
     const x = 600 + radius * Math.cos(radians)
-    const y = 700 + radius * Math.sin(radians) / 7
+    const y = 740 + radius * Math.sin(radians) / 7
     let scale = 1
 
     let z

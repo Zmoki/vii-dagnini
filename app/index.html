@@ -20,6 +20,7 @@
     }
     #scene {
       position: relative;
+      padding-top: 50px;
     }
     #carousel, #move {
       transition: opacity .5s, visibility .5s;
@@ -32,6 +33,7 @@
       height: 100%;
       display: flex;
       justify-content: center;
+      padding-top: 50px;
     }
     .hidden {
       visibility: hidden;
@@ -39,13 +41,13 @@
       z-index: -1;
     }
     #raduga-move {
-      margin: -30px 0 0 -50px;
+      margin: 20px 0 0 -50px;
     }
     #heruvim-move {
       margin: -20px -150px 0 0;
     }
     #smotritelnitsa-move {
-      margin-top: 100px;
+      margin-top: 150px;
     }
     #leg-move {
       margin-top: 100px;
@@ -54,7 +56,6 @@
 </head>
 <body>
 <div id="page">
-  <h1>Dagnini</h1>
   <div id="scene">
     <div id="loader">Loading <span id="progress">...</span></div>
     <div id="carousel" style="text-align: center" class="hidden"></div>
