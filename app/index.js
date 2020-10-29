@@ -154,7 +154,7 @@ window.addEventListener('load', () => {
   const topItems = [
     {
       name: 'gorgulia',
-      x: 550,
+      x: 600,
       y: -50,
     },
     {
@@ -164,7 +164,7 @@ window.addEventListener('load', () => {
     },
     {
       name: 'wings',
-      x: 900,
+      x: 950,
       y: -20,
     },
   ]
