@@ -154,7 +154,7 @@ window.addEventListener('load', () => {
   const topItems = [
     {
       name: 'gorgulia',
-      x: 600,
+      x: 650,
       y: -50,
     },
     {
@@ -172,7 +172,7 @@ window.addEventListener('load', () => {
   const getXYZ = (degres) => {
     const radius = 500
     const radians = (degres) * (Math.PI / 180)
-    const x = 600 + radius * Math.cos(radians)
+    const x = 650 + radius * Math.cos(radians)
     const y = 740 + radius * Math.sin(radians) / 7
     let scale = 1
 
@@ -223,7 +223,7 @@ window.addEventListener('load', () => {
 
   PIXI.utils.sayHello(type)
 
-  let app = new PIXI.Application({width: 1200, height: 800, transparent: true, forceCanvas: true});
+  let app = new PIXI.Application({width: 1300, height: 800, transparent: true, forceCanvas: true});
   //app.renderer.backgroundColor = PIXI.utils.string2hex("#dddddd");
   app.renderer.view.style.maxWidth = '100%'
   app.renderer.view.style.maxHeight = 'calc(100vh - 40px)'
