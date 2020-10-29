@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
 
       height: 260,
       width: 187,
-      deltaY: -23,
+      deltaY: -30,
     },
     'lion': {
 
@@ -41,7 +41,7 @@ window.addEventListener('load', () => {
 
       height: 300,
       width: 230,
-      deltaY: -3
+      deltaY: 5
     },
     'rusalka': {
 
@@ -65,7 +65,7 @@ window.addEventListener('load', () => {
 
       height: 550,
       width: 306,
-      deltaY: 20,
+      deltaY: 70,
     },
     'svidetel': {
 
@@ -155,25 +155,25 @@ window.addEventListener('load', () => {
     {
       name: 'gorgulia',
       x: 550,
-      y: 0,
+      y: -50,
     },
     {
       name: 'heruvim',
       x: 250,
-      y: 50,
+      y: 0,
     },
     {
       name: 'wings',
       x: 900,
-      y: 30,
+      y: -20,
     },
   ]
   let platformMovingState = 'running'
   const getXYZ = (degres) => {
-    const radius = 450
+    const radius = 500
     const radians = (degres) * (Math.PI / 180)
-    const x = 550 + radius * Math.cos(radians)
-    const y = 600 + radius * Math.sin(radians) / 7
+    const x = 600 + radius * Math.cos(radians)
+    const y = 700 + radius * Math.sin(radians) / 7
     let scale = 1
 
     let z
@@ -206,6 +206,7 @@ window.addEventListener('load', () => {
   }
   const degreeStep = 360 / platformItems.length
   const FPS = 15
+  const SUPER_SCALE = 1.15
 
   let type = "canvas"
   if (!PIXI.utils.isWebGLSupported()) {
@@ -222,7 +223,7 @@ window.addEventListener('load', () => {
 
   PIXI.utils.sayHello(type)
 
-  let app = new PIXI.Application({width: 1100, height: 800, transparent: true, forceCanvas: true});
+  let app = new PIXI.Application({width: 1200, height: 800, transparent: true, forceCanvas: true});
   //app.renderer.backgroundColor = PIXI.utils.string2hex("#dddddd");
   app.renderer.view.style.maxWidth = '100%'
   app.renderer.view.style.maxHeight = 'calc(100vh - 40px)'
@@ -290,10 +291,10 @@ window.addEventListener('load', () => {
 
       const {x, y, z, scale} = getXYZ(degrees)
 
-      sprite.width = loopVideos[name].width * scale
-      sprite.height = loopVideos[name].height * scale
-      sprite.x = x - (sprite.width / 2)
-      sprite.y = y - sprite.height + (typeof loopVideos[name].deltaY === 'undefined' ? 0 : loopVideos[name].deltaY)
+      sprite.width = loopVideos[name].width * scale * SUPER_SCALE
+      sprite.height = loopVideos[name].height * scale * SUPER_SCALE
+      sprite.x = x - (sprite.width * SUPER_SCALE / 2)
+      sprite.y = y - sprite.height * SUPER_SCALE + (typeof loopVideos[name].deltaY === 'undefined' ? 0 : loopVideos[name].deltaY)
       sprite.zIndex = z
       sprite.degrees = degrees
       sprite.interactive = true
@@ -303,9 +304,9 @@ window.addEventListener('load', () => {
     topItems.forEach((item) => {
       const sprite = sprites[item.name]
 
-      sprite.width = loopVideos[item.name].width
-      sprite.height = loopVideos[item.name].height
-      sprite.x = item.x - (sprite.width / 2)
+      sprite.width = loopVideos[item.name].width * SUPER_SCALE
+      sprite.height = loopVideos[item.name].height * SUPER_SCALE
+      sprite.x = item.x - (sprite.width * SUPER_SCALE / 2)
       sprite.y = item.y
       sprite.zIndex = 9
 
@@ -327,10 +328,10 @@ window.addEventListener('load', () => {
 
         const {x, y, z, scale} = getXYZ(sprite.degrees)
 
-        sprite.width = loopVideos[name].width * scale
-        sprite.height = loopVideos[name].height * scale
-        sprite.x = x - (sprite.width / 2)
-        sprite.y = y - sprite.height + (typeof loopVideos[name].deltaY === 'undefined' ? 0 : loopVideos[name].deltaY)
+        sprite.width = loopVideos[name].width * scale * SUPER_SCALE
+        sprite.height = loopVideos[name].height * scale * SUPER_SCALE
+        sprite.x = x - (sprite.width * SUPER_SCALE / 2)
+        sprite.y = y - sprite.height * SUPER_SCALE + (typeof loopVideos[name].deltaY === 'undefined' ? 0 : loopVideos[name].deltaY)
         sprite.zIndex = z
       })
     }
