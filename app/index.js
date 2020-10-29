@@ -319,7 +319,7 @@ window.addEventListener('load', () => {
     const platformMoving = () => {
       platformItems.forEach(name => {
         const sprite = sprites[name]
-        sprite.degrees += 0.5
+        sprite.degrees += 0.2
 
         if (sprite.degrees >= 360) {
           sprite.degrees = 0
