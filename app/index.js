@@ -3,6 +3,7 @@ const SCENE_WIDTH = 1300
 const SCENE_HEIGHT = 800
 const RADIUS = 500
 const FPS = 15
+const SPEED = 0.2
 const SUPER_SCALE = 1.15
 const LOOPS = {
   'four-hands': {
@@ -253,6 +254,7 @@ window.addEventListener('load', () => {
 
     const sprites = {}
     const carouselContainer = new PIXI.Container()
+    const playPromises = []
 
     carouselContainer.sortableChildren = true
 
@@ -265,63 +267,8 @@ window.addEventListener('load', () => {
 
       texture.baseTexture.resource.updateFPS = FPS
 
-      sprites[name] = new PIXI.Sprite(texture)
-    })
+      const sprite = new PIXI.Sprite(texture)
 
-    PLATFORM_ITEMS.forEach((name, index) => {
-      const sprite = sprites[name]
-      const degrees = index * DEGREES_STEP
-
-      const {x, y, z, scale} = getPosition(degrees)
-
-      sprite.width = LOOPS[name].width * scale * SUPER_SCALE
-      sprite.height = LOOPS[name].height * scale * SUPER_SCALE
-      sprite.x = x - (sprite.width * SUPER_SCALE / 2)
-      sprite.y = y - sprite.height * SUPER_SCALE + (typeof LOOPS[name].deltaY === 'undefined' ? 0 : LOOPS[name].deltaY)
-      sprite.zIndex = z
-      sprite.degrees = degrees
-      sprite.interactive = true
-
-      carouselContainer.addChild(sprite);
-    })
-    TOP_ITEMS.forEach((item) => {
-      const sprite = sprites[item.name]
-
-      sprite.width = LOOPS[item.name].width * SUPER_SCALE
-      sprite.height = LOOPS[item.name].height * SUPER_SCALE
-      sprite.x = item.x - (sprite.width * SUPER_SCALE / 2)
-      sprite.y = item.y
-      sprite.zIndex = 9
-
-      if (item.name === 'gorgulia') {
-        sprite.interactive = true
-      }
-
-      carouselContainer.addChild(sprite);
-    })
-
-    const platformMoving = () => {
-      PLATFORM_ITEMS.forEach(name => {
-        const sprite = sprites[name]
-        sprite.degrees += 0.2
-
-        if (sprite.degrees >= 360) {
-          sprite.degrees = 0
-        }
-
-        const {x, y, z, scale} = getPosition(sprite.degrees)
-
-        sprite.width = LOOPS[name].width * scale * SUPER_SCALE
-        sprite.height = LOOPS[name].height * scale * SUPER_SCALE
-        sprite.x = x - (sprite.width * SUPER_SCALE / 2)
-        sprite.y = y - sprite.height * SUPER_SCALE + (typeof LOOPS[name].deltaY === 'undefined' ? 0 : LOOPS[name].deltaY)
-        sprite.zIndex = z
-      })
-    }
-
-    const playPromises = []
-    Object.keys(sprites).forEach((name, index) => {
-      const sprite = sprites[name]
       if (!isSafari) {
         const playPromise = sprite.texture.baseTexture.resource.source.play()
 
@@ -390,7 +337,60 @@ window.addEventListener('load', () => {
           }, {once: true})
         })
       }
+
+      sprites[name] = sprite
     })
+
+    PLATFORM_ITEMS.forEach((name, index) => {
+      const sprite = sprites[name]
+      const degrees = index * DEGREES_STEP
+
+      const {x, y, z, scale} = getPosition(degrees)
+
+      sprite.width = LOOPS[name].width * scale * SUPER_SCALE
+      sprite.height = LOOPS[name].height * scale * SUPER_SCALE
+      sprite.x = x - (sprite.width * SUPER_SCALE / 2)
+      sprite.y = y - sprite.height * SUPER_SCALE + (typeof LOOPS[name].deltaY === 'undefined' ? 0 : LOOPS[name].deltaY)
+      sprite.zIndex = z
+      sprite.degrees = degrees
+      sprite.interactive = true
+
+      carouselContainer.addChild(sprite);
+    })
+    TOP_ITEMS.forEach((item) => {
+      const sprite = sprites[item.name]
+
+      sprite.width = LOOPS[item.name].width * SUPER_SCALE
+      sprite.height = LOOPS[item.name].height * SUPER_SCALE
+      sprite.x = item.x - (sprite.width * SUPER_SCALE / 2)
+      sprite.y = item.y
+      sprite.zIndex = 9
+
+      if (item.name === 'gorgulia') {
+        sprite.interactive = true
+      }
+
+      carouselContainer.addChild(sprite);
+    })
+
+    const platformMoving = () => {
+      PLATFORM_ITEMS.forEach(name => {
+        const sprite = sprites[name]
+        sprite.degrees += SPEED
+
+        if (sprite.degrees >= 360) {
+          sprite.degrees = 0
+        }
+
+        const {x, y, z, scale} = getPosition(sprite.degrees)
+
+        sprite.width = LOOPS[name].width * scale * SUPER_SCALE
+        sprite.height = LOOPS[name].height * scale * SUPER_SCALE
+        sprite.x = x - (sprite.width * SUPER_SCALE / 2)
+        sprite.y = y - sprite.height * SUPER_SCALE + (typeof LOOPS[name].deltaY === 'undefined' ? 0 : LOOPS[name].deltaY)
+        sprite.zIndex = z
+      })
+    }
 
     const setup = () => {
       console.log('play')
