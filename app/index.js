@@ -1,4 +1,4 @@
-const VERSION = 3
+const VERSION = 4
 const SCENE_WIDTH = 1300
 const SCENE_HEIGHT = 800
 const RADIUS = 500
