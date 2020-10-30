@@ -225,10 +225,18 @@ window.addEventListener('load', () => {
     .add(Object.keys(LOOPS).map((name) => {
       let url
 
-      if (isSafari) {
-        url = `videos/_loops/hevc/${name}-loop.mp4?v=${VERSION}`
+      if (window.matchMedia("(max-width: 799px)").matches) {
+        if (isSafari) {
+          url = `videos/_loops/_small/hevc/${name}-loop.mp4?v=${VERSION}`
+        } else {
+          url = `videos/_loops/_small/webm/${name}-loop.webm?v=${VERSION}`
+        }
       } else {
-        url = `videos/_loops/webm/${name}-loop.webm?v=${VERSION}`
+        if (isSafari) {
+          url = `videos/_loops/hevc/${name}-loop.mp4?v=${VERSION}`
+        } else {
+          url = `videos/_loops/webm/${name}-loop.webm?v=${VERSION}`
+        }
       }
 
       return {
