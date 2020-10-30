@@ -313,6 +313,14 @@ window.addEventListener('load', () => {
 
           if (name === 'smotritelnitsa') {
             moves = ['smotritelnitsa', 'raduga']
+
+            const imageElement = document.createElement('img')
+
+            imageElement.id = 'raduga-frame'
+            imageElement.src = `raduga-frame.jpg?=${VERSION}`
+            imageElement.width = 435
+
+            document.querySelector('#move').appendChild(imageElement)
           }
           if (name === 'four-hands') {
             moves = ['heruvim', 'four-hands']
