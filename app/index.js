@@ -3,7 +3,7 @@ const SCENE_WIDTH = 1300
 const SCENE_HEIGHT = 800
 const RADIUS = 500
 const FPS = 15
-const SPEED = 0.6
+const SPEED = 0.2
 const SUPER_SCALE = 1.15
 const LOOPS = {
   'four-hands': {
