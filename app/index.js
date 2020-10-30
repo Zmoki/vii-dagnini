@@ -341,7 +341,7 @@ window.addEventListener('load', () => {
 
             document.querySelector('#move').appendChild(videoElement)
 
-            //videoElement.addEventListener('ended', stop)
+            videoElement.addEventListener('ended', stop)
             document.querySelector('#move').addEventListener('click', () => {
               videoElement.pause()
             }, {once: true})
