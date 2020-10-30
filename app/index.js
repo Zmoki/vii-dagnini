@@ -1,243 +1,232 @@
 const VERSION = 3
+const SCENE_WIDTH = 1300
+const SCENE_HEIGHT = 800
+const RADIUS = 500
+const FPS = 15
+const SUPER_SCALE = 1.15
+const LOOPS = {
+  'four-hands': {
+    height: 290,
+    width: 301,
+    deltaY: 5
+  },
+  'gorgulia': {
+    height: 300,
+    width: 292,
+  },
+  'leg': {
+    height: 180,
+    width: 310,
+    deltaY: 20
+  },
+  'goroh': {
+    height: 260,
+    width: 187,
+    deltaY: -30,
+  },
+  'lion': {
+    height: 320,
+    width: 319,
+    deltaY: 3
+  },
+  'opera': {
+    height: 460,
+    width: 381,
+    deltaY: 30,
+  },
+  'pip-show': {
+    height: 300,
+    width: 230,
+    deltaY: 5
+  },
+  'rusalka': {
+    height: 290,
+    width: 247,
+    deltaY: 5
+  },
+  'smotritelnitsa': {
+    height: 310,
+    width: 218,
+    deltaY: 10
+  },
+  'sport': {
+    height: 310,
+    width: 274,
+    deltaY: 5
+  },
+  'svetofor': {
+    height: 550,
+    width: 306,
+    deltaY: 90,
+  },
+  'svidetel': {
+    height: 350,
+    width: 280,
+    deltaY: 0
+  },
+  'wings': {
+    height: 132,
+    width: 218,
+  },
+  'heruvim': {
+    height: 170,
+    width: 170,
+  },
+}
+const MOVES = {
+  'four-hands': {
+    height: 400,
+  },
+  'gorgulia': {
+    height: 400
+  },
+  'goroh': {
+    height: 400
+  },
+  'leg': {
+    height: 200
+  },
+  'lion': {
+    height: 400
+  },
+  'opera': {
+    height: 500
+  },
+  'pip-show': {
+    height: 560
+  },
+  'raduga': {
+    height: 290,
+  },
+  'rusalka': {
+    height: 400,
+  },
+  'smotritelnitsa': {
+    height: 400,
+  },
+  'sport': {
+    height: 400,
+  },
+  'svetofor': {
+    height: 600,
+  },
+  'svidetel': {
+    height: 400,
+  },
+}
+const PLATFORM_ITEMS = [
+  'goroh',
+  'svetofor',
+  'sport',
+  'smotritelnitsa',
+  'rusalka',
+  'opera',
+  'lion',
+  'four-hands',
+  'pip-show',
+  'leg',
+  'svidetel',
+]
+const TOP_ITEMS = [
+  {
+    name: 'gorgulia',
+    x: SCENE_WIDTH / 2,
+    y: -50,
+  },
+  {
+    name: 'heruvim',
+    x: 250,
+    y: 0,
+  },
+  {
+    name: 'wings',
+    x: 950,
+    y: -20,
+  },
+]
+
+const DEGREES_STEP = 360 / PLATFORM_ITEMS.length
+
+const getPosition = (degrees) => {
+  const radians = (degrees) * (Math.PI / 180)
+  const x = (SCENE_WIDTH / 2) + RADIUS * Math.cos(radians)
+  const y = (SCENE_HEIGHT - 60) + RADIUS * Math.sin(radians) / 7
+  let scale = 1
+
+  let z
+  if (degrees >= 0 && degrees <= 45) {
+    z = 9
+    scale = .9 + (((1 - .9) / 45) * degrees)
+  } else if (degrees > 45 && degrees <= 135) {
+    z = 10
+    scale = 1
+  } else if (degrees > 135 && degrees <= 180) {
+    z = 9
+    scale = 1 + (((.9 - 1) / 45) * (degrees - 135))
+  } else if (degrees > 180 && degrees <= 225) {
+    z = 8
+    scale = .9 + (((.8 - .9) / 45) * (degrees - 180))
+  } else if (degrees > 225 && degrees <= 315) {
+    z = 7
+    scale = .8
+  } else {
+    z = 8
+    scale = .8 + (((.9 - .8) / 45) * (degrees - 315))
+  }
+
+  return {
+    x,
+    y,
+    z,
+    scale
+  }
+}
+const createVideoElement = () => {
+  const videoElement = document.createElement('video')
+
+  videoElement.muted = true
+  videoElement.loop = true
+  videoElement.autoplay = true
+  videoElement.WebKitPlaysInline = true
+  videoElement.setAttribute('playsinline', '')
+
+  return videoElement
+}
 
 window.addEventListener('load', () => {
-  const loopVideos = {
-    'four-hands': {
-
-      height: 290,
-      width: 301,
-      deltaY: 5
-    },
-    'gorgulia': {
-
-      height: 300,
-      width: 292,
-    },
-    'leg': {
-
-      height: 180,
-      width: 310,
-      deltaY: 20
-    },
-    'goroh': {
-
-      height: 260,
-      width: 187,
-      deltaY: -30,
-    },
-    'lion': {
-
-      height: 320,
-      width: 319,
-      deltaY: 3
-    },
-    'opera': {
-
-      height: 460,
-      width: 381,
-      deltaY: 30,
-    },
-    'pip-show': {
-
-      height: 300,
-      width: 230,
-      deltaY: 5
-    },
-    'rusalka': {
-
-      height: 290,
-      width: 247,
-      deltaY: 5
-    },
-    'smotritelnitsa': {
-
-      height: 310,
-      width: 218,
-      deltaY: 10
-    },
-    'sport': {
-
-      height: 310,
-      width: 274,
-      deltaY: 5
-    },
-    'svetofor': {
-
-      height: 550,
-      width: 306,
-      deltaY: 90,
-    },
-    'svidetel': {
-
-      height: 350,
-      width: 280,
-      deltaY: 0
-    },
-    'wings': {
-
-      height: 132,
-      width: 218,
-    },
-    'heruvim': {
-
-      height: 170,
-      width: 170,
-    },
-  }
-  const moveVideos = {
-    'four-hands': {
-
-      height: 400,
-    },
-    'gorgulia': {
-
-      height: 400
-    },
-    'goroh': {
-
-      height: 400
-    },
-    'leg': {
-
-      height: 200
-    },
-    'lion': {
-
-      height: 400
-    },
-    'opera': {
-
-      height: 500
-    },
-    'pip-show': {
-
-      height: 560
-    },
-    'raduga': {
-
-      height: 290,
-    },
-    'rusalka': {
-
-      height: 400,
-    },
-    'smotritelnitsa': {
-
-      height: 400,
-    },
-    'sport': {
-
-      height: 400,
-    },
-    'svetofor': {
-
-      height: 600,
-    },
-    'svidetel': {
-
-      height: 400,
-    },
-  }
-  const platformItems = [
-    'goroh',
-    'svetofor',
-    'sport',
-    'smotritelnitsa',
-    'rusalka',
-    'opera',
-    'lion',
-    'four-hands',
-    'pip-show',
-    'leg',
-    'svidetel',
-  ]
-  const topItems = [
-    {
-      name: 'gorgulia',
-      x: 650,
-      y: -50,
-    },
-    {
-      name: 'heruvim',
-      x: 250,
-      y: 0,
-    },
-    {
-      name: 'wings',
-      x: 950,
-      y: -20,
-    },
-  ]
   let platformMovingState = 'running'
-  const getXYZ = (degres) => {
-    const radius = 500
-    const radians = (degres) * (Math.PI / 180)
-    const x = 650 + radius * Math.cos(radians)
-    const y = 740 + radius * Math.sin(radians) / 7
-    let scale = 1
 
-    let z
-    if (degres >= 0 && degres <= 45) {
-      z = 9
-      scale = .9 + (((1 - .9) / 45) * degres)
-    } else if (degres > 45 && degres <= 135) {
-      z = 10
-      scale = 1
-    } else if (degres > 135 && degres <= 180) {
-      z = 9
-      scale = 1 + (((.9 - 1) / 45) * (degres - 135))
-    } else if (degres > 180 && degres <= 225) {
-      z = 8
-      scale = .9 + (((.8 - .9) / 45) * (degres - 180))
-    } else if (degres > 225 && degres <= 315) {
-      z = 7
-      scale = .8
-    } else {
-      z = 8
-      scale = .8 + (((.9 - .8) / 45) * (degres - 315))
-    }
-
-    return {
-      x,
-      y,
-      z,
-      scale
-    }
-  }
-  const degreeStep = 360 / platformItems.length
-  const FPS = 15
-  const SUPER_SCALE = 1.15
-
-  let type = "canvas"
-  if (!PIXI.utils.isWebGLSupported()) {
-    type = "canvas"
-  }
-
-  let isSafari = false
+  let isSafari
   const testEl = document.createElement("video")
   if (testEl.canPlayType('video/webm')) {
     isSafari = false
   } else if (testEl.canPlayType('video/mp4; codecs=hvc1')) {
     isSafari = true
+  } else {
+    throw new Error('Video not supported')
+  }
+
+  let type = "WebGL"
+  if (!PIXI.utils.isWebGLSupported()) {
+    type = "canvas"
   }
 
   PIXI.utils.sayHello(type)
 
-  let app = new PIXI.Application({width: 1300, height: 800, transparent: true, forceCanvas: true});
-  //app.renderer.backgroundColor = PIXI.utils.string2hex("#dddddd");
+  let app = new PIXI.Application({width: SCENE_WIDTH, height: SCENE_HEIGHT, transparent: true, forceCanvas: true});
+
   app.renderer.view.style.maxWidth = '100%'
   app.renderer.view.style.maxHeight = 'calc(100vh - 40px)'
 
   const loader = new PIXI.Loader()
 
   loader
-    .add(Object.keys(loopVideos).map((name) => {
-      let url = null
+    .add(Object.keys(LOOPS).map((name) => {
+      let url
 
       if (isSafari) {
         url = `videos/_loops/hevc/${name}-loop.mp4?v=${VERSION}`
-      }
-      else {
+      } else {
         url = `videos/_loops/webm/${name}-loop.webm?v=${VERSION}`
       }
 
@@ -255,57 +244,51 @@ window.addEventListener('load', () => {
   loader.onError.add((e) => {
     console.log('errror', e)
   })
-  loader.onProgress.add(loadProgressHandler)
-
-  function loadProgressHandler(loader) {
+  loader.onProgress.add((loader) => {
     document.getElementById('progress').innerText = Math.floor(loader.progress) + "%"
-  }
+  })
 
   loader.load((loader, resources) => {
     console.log('load', loader, resources)
 
-    const platformItemsContainer = new PIXI.Container()
     const sprites = {}
+    const carouselContainer = new PIXI.Container()
 
-    platformItemsContainer.sortableChildren = true
+    carouselContainer.sortableChildren = true
 
     Object.keys(resources).map((name, index) => {
-      const videoElement = document.createElement('video')
+      const videoElement = createVideoElement()
 
-      videoElement.muted = true
-      videoElement.loop = true
-      videoElement.autoplay = true
-      videoElement.WebKitPlaysInline = true
-      videoElement.setAttribute('playsinline', '')
       videoElement.src = resources[name].url
 
       const texture = PIXI.Texture.from(videoElement)
+
       texture.baseTexture.resource.updateFPS = FPS
 
       sprites[name] = new PIXI.Sprite(texture)
     })
 
-    platformItems.forEach((name, index) => {
+    PLATFORM_ITEMS.forEach((name, index) => {
       const sprite = sprites[name]
-      const degrees = index * degreeStep
+      const degrees = index * DEGREES_STEP
 
-      const {x, y, z, scale} = getXYZ(degrees)
+      const {x, y, z, scale} = getPosition(degrees)
 
-      sprite.width = loopVideos[name].width * scale * SUPER_SCALE
-      sprite.height = loopVideos[name].height * scale * SUPER_SCALE
+      sprite.width = LOOPS[name].width * scale * SUPER_SCALE
+      sprite.height = LOOPS[name].height * scale * SUPER_SCALE
       sprite.x = x - (sprite.width * SUPER_SCALE / 2)
-      sprite.y = y - sprite.height * SUPER_SCALE + (typeof loopVideos[name].deltaY === 'undefined' ? 0 : loopVideos[name].deltaY)
+      sprite.y = y - sprite.height * SUPER_SCALE + (typeof LOOPS[name].deltaY === 'undefined' ? 0 : LOOPS[name].deltaY)
       sprite.zIndex = z
       sprite.degrees = degrees
       sprite.interactive = true
 
-      platformItemsContainer.addChild(sprite);
+      carouselContainer.addChild(sprite);
     })
-    topItems.forEach((item) => {
+    TOP_ITEMS.forEach((item) => {
       const sprite = sprites[item.name]
 
-      sprite.width = loopVideos[item.name].width * SUPER_SCALE
-      sprite.height = loopVideos[item.name].height * SUPER_SCALE
+      sprite.width = LOOPS[item.name].width * SUPER_SCALE
+      sprite.height = LOOPS[item.name].height * SUPER_SCALE
       sprite.x = item.x - (sprite.width * SUPER_SCALE / 2)
       sprite.y = item.y
       sprite.zIndex = 9
@@ -314,11 +297,11 @@ window.addEventListener('load', () => {
         sprite.interactive = true
       }
 
-      platformItemsContainer.addChild(sprite);
+      carouselContainer.addChild(sprite);
     })
 
     const platformMoving = () => {
-      platformItems.forEach(name => {
+      PLATFORM_ITEMS.forEach(name => {
         const sprite = sprites[name]
         sprite.degrees += 0.2
 
@@ -326,25 +309,31 @@ window.addEventListener('load', () => {
           sprite.degrees = 0
         }
 
-        const {x, y, z, scale} = getXYZ(sprite.degrees)
+        const {x, y, z, scale} = getPosition(sprite.degrees)
 
-        sprite.width = loopVideos[name].width * scale * SUPER_SCALE
-        sprite.height = loopVideos[name].height * scale * SUPER_SCALE
+        sprite.width = LOOPS[name].width * scale * SUPER_SCALE
+        sprite.height = LOOPS[name].height * scale * SUPER_SCALE
         sprite.x = x - (sprite.width * SUPER_SCALE / 2)
-        sprite.y = y - sprite.height * SUPER_SCALE + (typeof loopVideos[name].deltaY === 'undefined' ? 0 : loopVideos[name].deltaY)
+        sprite.y = y - sprite.height * SUPER_SCALE + (typeof LOOPS[name].deltaY === 'undefined' ? 0 : LOOPS[name].deltaY)
         sprite.zIndex = z
       })
     }
 
-    app.stage.addChild(platformItemsContainer)
-
     const playPromises = []
     Object.keys(sprites).forEach((name, index) => {
       const sprite = sprites[name]
+      if (!isSafari) {
+        const playPromise = sprite.texture.baseTexture.resource.source.play()
+
+        playPromises.push(playPromise)
+        playPromise.then(() => {
+          console.log(name, 'play')
+        })
+      }
       // sprite.x = 260 * index - 0
       // sprite.y = 600 - sprite.height + (typeof loopVideos[name].deltaY === 'undefined' ? 0 : loopVideos[name].deltaY)
 
-      if (typeof moveVideos[name] !== 'undefined') {
+      if (typeof MOVES[name] !== 'undefined') {
         sprite.on('pointertap', () => {
           platformMovingState = 'paused'
           Object.keys(sprites).forEach(item => {
@@ -375,28 +364,25 @@ window.addEventListener('load', () => {
           }
 
           moves.forEach((moveName) => {
-            const moveVideoElement = document.createElement('video')
+            const videoElement = createVideoElement()
 
-            moveVideoElement.id = `${moveName}-move`
-            moveVideoElement.muted = !['four-hands', 'opera'].includes(moveName)
-            moveVideoElement.autoplay = true
-            moveVideoElement.WebKitPlaysInline = true
-            moveVideoElement.setAttribute('playsinline', '')
+            videoElement.id = `${moveName}-move`
+            videoElement.muted = !['four-hands', 'opera'].includes(moveName)
+            videoElement.loop = false
 
             if (moveName === 'heruvim') {
-              moveVideoElement.src = isSafari ?`videos/_loops/hevc/${moveName}-loop.mp4?v=${VERSION}` : `videos/_loops/webm/${moveName}-loop.webm?v=${VERSION}`
-              moveVideoElement.height = loopVideos[moveName].height
-            }
-            else {
-              moveVideoElement.src = isSafari ?`videos/_moves/hevc/${moveName}-move.mp4?v=${VERSION}` : `videos/_moves/webm/${moveName}-move.webm?v=${VERSION}`
-              moveVideoElement.height = moveVideos[moveName].height
+              videoElement.src = isSafari ? `videos/_loops/hevc/${moveName}-loop.mp4?v=${VERSION}` : `videos/_loops/webm/${moveName}-loop.webm?v=${VERSION}`
+              videoElement.height = LOOPS[moveName].height
+            } else {
+              videoElement.src = isSafari ? `videos/_moves/hevc/${moveName}-move.mp4?v=${VERSION}` : `videos/_moves/webm/${moveName}-move.webm?v=${VERSION}`
+              videoElement.height = MOVES[moveName].height
             }
 
-            document.querySelector('#move').appendChild(moveVideoElement)
+            document.querySelector('#move').appendChild(videoElement)
 
-            moveVideoElement.addEventListener('ended', stop)
+            videoElement.addEventListener('ended', stop)
             document.querySelector('#move').addEventListener('click', () => {
-              moveVideoElement.pause()
+              videoElement.pause()
             }, {once: true})
           })
           document.querySelector('#move').addEventListener('click', () => {
@@ -404,18 +390,11 @@ window.addEventListener('load', () => {
           }, {once: true})
         })
       }
-
-      const videoElement = sprite.texture.baseTexture.resource.source
-      const playPromise = videoElement.play()
-
-      playPromises.push(playPromise)
-      playPromise.then(() => {
-        console.log(name, 'play')
-      })
     })
 
     const setup = () => {
       console.log('play')
+      app.stage.addChild(carouselContainer)
       document.querySelector('#loader').hidden = true
       document.querySelector('#carousel').classList.toggle('hidden')
       document.querySelector('#carousel').appendChild(app.view);
@@ -425,13 +404,13 @@ window.addEventListener('load', () => {
         }
       }, 1000 / FPS)
     }
-    if (isSafari) {
-      setup()
-    }
-    else {
+
+    if (!isSafari) {
       Promise.all(playPromises).then(() => {
         setup()
       })
+    } else {
+      setup()
     }
   })
 })
