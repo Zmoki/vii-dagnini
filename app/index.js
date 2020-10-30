@@ -3,7 +3,7 @@ const SCENE_WIDTH = 1300
 const SCENE_HEIGHT = 800
 const RADIUS = 500
 const FPS = 15
-const SPEED = 0.2
+const SPEED = 0.6
 const SUPER_SCALE = 1.15
 const LOOPS = {
   'four-hands': {
@@ -83,6 +83,10 @@ const MOVES = {
   },
   'goroh': {
     height: 400
+  },
+  'heruvim': {
+    height: 170,
+    width: 170,
   },
   'leg': {
     height: 200
@@ -332,18 +336,12 @@ window.addEventListener('load', () => {
             videoElement.id = `${moveName}-move`
             videoElement.muted = !['four-hands', 'opera'].includes(moveName)
             videoElement.loop = false
-
-            if (moveName === 'heruvim') {
-              videoElement.src = isSafari ? `videos/_loops/hevc/${moveName}-loop.mp4?v=${VERSION}` : `videos/_loops/webm/${moveName}-loop.webm?v=${VERSION}`
-              videoElement.height = LOOPS[moveName].height
-            } else {
-              videoElement.src = isSafari ? `videos/_moves/hevc/${moveName}-move.mp4?v=${VERSION}` : `videos/_moves/webm/${moveName}-move.webm?v=${VERSION}`
-              videoElement.height = MOVES[moveName].height
-            }
+            videoElement.src = isSafari ? `videos/_moves/hevc/${moveName}-move.mp4?v=${VERSION}` : `videos/_moves/webm/${moveName}-move.webm?v=${VERSION}`
+            videoElement.height = MOVES[moveName].height
 
             document.querySelector('#move').appendChild(videoElement)
 
-            videoElement.addEventListener('ended', stop)
+            //videoElement.addEventListener('ended', stop)
             document.querySelector('#move').addEventListener('click', () => {
               videoElement.pause()
             }, {once: true})
