@@ -1,4 +1,4 @@
-const VERSION = 4
+const VERSION = 5
 const SCENE_WIDTH = 1300
 const SCENE_HEIGHT = 800
 const RADIUS = 500
@@ -15,15 +15,19 @@ const LOOPS = {
     height: 300,
     width: 292,
   },
-  'leg': {
-    height: 180,
-    width: 310,
-    deltaY: 20
-  },
   'goroh': {
     height: 260,
     width: 187,
     deltaY: -30,
+  },
+  'heruvim': {
+    height: 170,
+    width: 170,
+  },
+  'leg': {
+    height: 180,
+    width: 310,
+    deltaY: 20
   },
   'lion': {
     height: 320,
@@ -68,10 +72,6 @@ const LOOPS = {
   'wings': {
     height: 132,
     width: 218,
-  },
-  'heruvim': {
-    height: 170,
-    width: 170,
   },
 }
 const MOVES = {
