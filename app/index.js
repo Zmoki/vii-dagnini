@@ -78,6 +78,10 @@ const MOVES = {
   'four-hands': {
     height: 400,
   },
+  'four-hands-heruvim': {
+    height: 170,
+    width: 170,
+  },
   'gorgulia': {
     height: 400
   },
@@ -85,8 +89,7 @@ const MOVES = {
     height: 400
   },
   'heruvim': {
-    height: 170,
-    width: 170,
+    height: 300
   },
   'leg': {
     height: 200
@@ -117,6 +120,9 @@ const MOVES = {
   },
   'svidetel': {
     height: 400,
+  },
+  'wings': {
+    height: 300,
   },
 }
 const PLATFORM_ITEMS = [
@@ -327,7 +333,7 @@ window.addEventListener('load', () => {
             document.querySelector('#move').appendChild(imageElement)
           }
           if (name === 'four-hands') {
-            moves = ['heruvim', 'four-hands']
+            moves = ['four-hands-heruvim', 'four-hands']
           }
 
           moves.forEach((moveName) => {
@@ -379,10 +385,7 @@ window.addEventListener('load', () => {
       sprite.x = item.x - (sprite.width * SUPER_SCALE / 2)
       sprite.y = item.y
       sprite.zIndex = 9
-
-      if (item.name === 'gorgulia') {
-        sprite.interactive = true
-      }
+      sprite.interactive = true
 
       carouselContainer.addChild(sprite);
     })

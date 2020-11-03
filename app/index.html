@@ -37,21 +37,28 @@
       display: flex;
       justify-content: center;
       padding-top: 50px;
+      background: #fff;
     }
     #text {
       font-family: Arial, sans-serif;
       font-weight: 400;
-      font-size: 14px;
+      font-size: 12px;
       line-height: 1.8;
       color: rgba(0, 0, 0, 0.6);
       width: calc(100vw - 40px);
-      max-width: 600px;
-      margin: 100px auto;
       text-transform: uppercase;
+      margin: 200px auto;
     }
     #text ul {
       list-style: none;
       padding: 0;
+    }
+    @media (min-width: 920px) {
+      #text ul {
+        display: flex;
+        justify-content: space-between;
+        max-width: 1300px;
+      }
     }
     #text li {
       margin: 0 0 .2em;
@@ -83,14 +90,12 @@
       transform: translateX(-100px);
       z-index: 2;
     }
-    #heruvim-move {
+    #four-hands-heruvim-move {
       margin: 40px -110px 0 0;
+      z-index: 10;
     }
     #leg-move {
       margin-top: 100px;
-    }
-    #heruvim-move {
-      z-index: 10;
     }
   </style>
 </head>
