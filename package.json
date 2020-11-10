@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "Project of Dagnini for VII Moscow International Biennale for Young Art.",
   "scripts": {
-    "clean": "rimraf dist",
-    "create:video:webm": "ffmpeg -start_number $START_NUMBER -i ./sources/\"$SOURCE_PATH\" -frames:v $FRAMES_COUNT ./app/videos/$OUT_NAME.webm",
-    "build": "parcel build app/index.html",
-    "start": "parcel serve app/index.html",
+    "start": "browser-sync start --server 'app' --files 'app'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,7 +17,6 @@
   },
   "homepage": "https://github.com/Zmoki/vii-dagnini#readme",
   "devDependencies": {
-    "parcel": "^2.0.0-beta.1",
-    "rimraf": "^3.0.2"
+    "browser-sync": "^2.26.13"
   }
 }
